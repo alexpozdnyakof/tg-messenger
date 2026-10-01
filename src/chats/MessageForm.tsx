@@ -69,13 +69,14 @@ function MessageForm({ onSend }: MessageFormProps) {
           name="message"
           placeholder="Написать сообщение…"
           autoComplete="off"
+          autoFocus
           className="h-9 flex-1"
           value={value}
           onChange={(event) =>
             dispatch({ type: 'setValue', value: event.target.value })
           }
           aria-invalid={Boolean(error)}
-          disabled={status === 'sending'}
+          readOnly={status === 'sending'}
         />
         <Button
           type="submit"

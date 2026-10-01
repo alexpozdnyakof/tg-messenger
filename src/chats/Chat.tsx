@@ -77,7 +77,7 @@ function Chat({ chatId }: ChatProps) {
           {currentHistoryError}
         </p>
       )}
-      <MessageForm onSend={handleSend} />
+      <MessageForm key={chatId} onSend={handleSend} />
     </div>
   )
 }
