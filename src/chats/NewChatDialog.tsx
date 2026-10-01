@@ -2,6 +2,7 @@ import { PlusIcon } from 'lucide-react'
 import { useReducer, useState } from 'react'
 import { checkAccount, type CheckAccountParams } from '@/api/greenApiClient'
 import { useAuthStore } from '@/auth/authStore'
+import { handleGreenApiAuthError } from '@/auth/handleGreenApiAuthError'
 import { useChatsStore } from '@/chats/chatsStore'
 import { Button } from '@/lib/ui/button'
 import {
@@ -90,7 +91,7 @@ function NewChatDialog() {
     if (!result.ok) {
       dispatch({
         type: 'submitFailed',
-        error: 'Сервис GREEN-API недоступен, попробуйте позже',
+        error: handleGreenApiAuthError(result.error),
       })
       return
     }

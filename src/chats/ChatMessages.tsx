@@ -8,14 +8,17 @@ export type ChatMessage = {
 
 type ChatMessagesProps = {
   messages: ChatMessage[]
+  isLoading?: boolean
 }
 
-function ChatMessages({ messages }: ChatMessagesProps) {
+function ChatMessages({ messages, isLoading = false }: ChatMessagesProps) {
   return (
     <div className="min-h-0 flex-1 overflow-y-auto p-4">
       {messages.length === 0 ? (
         <div className="flex h-full items-center justify-center">
-          <p className="text-sm text-muted-foreground">Нет сообщений</p>
+          <p className="text-sm text-muted-foreground">
+            {isLoading ? 'Загрузка истории…' : 'Нет сообщений'}
+          </p>
         </div>
       ) : (
         <div className="flex flex-col gap-2">

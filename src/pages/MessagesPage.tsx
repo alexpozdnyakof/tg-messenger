@@ -13,7 +13,7 @@ function MessagesPage({ chatId }: MessagesPageProps) {
       </aside>
       <main className="col-span-9 flex h-full min-h-0 flex-col">
         {chatId ? (
-          <Chat key={chatId} chatId={chatId} />
+          <Chat chatId={chatId} />
         ) : (
           <div className="flex h-full items-center justify-center">
             <p className="text-muted-foreground">Выберите чат слева</p>
