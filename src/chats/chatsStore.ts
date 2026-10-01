@@ -9,6 +9,7 @@ export type Chat = {
 type ChatsState = {
   chats: Chat[]
   addChat: (chat: Chat) => void
+  reset: () => void
 }
 
 export const useChatsStore = create<ChatsState>()(
@@ -21,6 +22,7 @@ export const useChatsStore = create<ChatsState>()(
         }
         set({ chats: [chat, ...get().chats] })
       },
+      reset: () => set({ chats: [] }),
     }),
     { name: 'greenapi-chats' },
   ),
