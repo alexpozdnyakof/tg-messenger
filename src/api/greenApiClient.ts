@@ -90,3 +90,39 @@ export async function checkAccount(
   }
   return { ok: true, exist: true, chatId: body.chatId }
 }
+
+export type SendMessageParams = {
+  chatId: string
+  message: string
+  quotedMessageId?: string
+}
+
+export type SendMessageResult =
+  | { ok: true; idMessage: string }
+  | { ok: false; error: 'serviceUnavailable' }
+
+export async function sendMessage(
+  credentials: GreenApiCredentials,
+  params: SendMessageParams,
+): Promise<SendMessageResult> {
+  const { idInstance, apiTokenInstance } = credentials
+  const url = `${GREEN_API_URL}/waInstance${idInstance}/sendMessage/${apiTokenInstance}`
+
+  let response: Response
+  try {
+    response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params),
+    })
+  } catch {
+    return { ok: false, error: 'serviceUnavailable' }
+  }
+
+  if (!response.ok) {
+    return { ok: false, error: 'serviceUnavailable' }
+  }
+
+  const body = (await response.json()) as { idMessage: string }
+  return { ok: true, idMessage: body.idMessage }
+}
