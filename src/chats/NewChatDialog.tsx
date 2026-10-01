@@ -1,3 +1,4 @@
+import { PlusIcon } from 'lucide-react'
 import { useReducer, useState } from 'react'
 import { checkAccount, type CheckAccountParams } from '@/api/greenApiClient'
 import { useAuthStore } from '@/auth/authStore'
@@ -114,7 +115,12 @@ function NewChatDialog() {
         if (!nextOpen) dispatch({ type: 'reset' })
       }}
     >
-      <DialogTrigger render={<Button />}>Добавить чат</DialogTrigger>
+      <DialogTrigger
+        render={<Button variant="ghost" size="icon-sm" aria-label="Добавить чат" />}
+        title="Добавить чат"
+      >
+        <PlusIcon />
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Новый чат</DialogTitle>

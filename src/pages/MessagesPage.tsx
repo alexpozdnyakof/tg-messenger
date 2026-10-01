@@ -1,44 +1,25 @@
-import { useAuthStore } from '@/auth/authStore'
-import { useChatsStore } from '@/chats/chatsStore'
-import NewChatDialog from '@/chats/NewChatDialog'
-import { Button } from '@/lib/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/lib/ui/card'
+import Chat from '@/chats/Chat'
+import ChatsList from '@/chats/ChatsList'
 
-function MessagesPage() {
-  const logout = useAuthStore((state) => state.logout)
-  const chats = useChatsStore((state) => state.chats)
+type MessagesPageProps = {
+  chatId?: string
+}
 
+function MessagesPage({ chatId }: MessagesPageProps) {
   return (
-    <div className="flex min-h-svh items-center justify-center p-4">
-      <Card className="flex h-full w-full max-w-5xl flex-col">
-        <CardHeader className="flex items-center justify-between">
-          <CardTitle>Чаты</CardTitle>
-          <div className="flex items-center gap-2">
-            <NewChatDialog />
-            <Button variant="outline" onClick={logout}>
-              Выйти
-            </Button>
+    <div className="grid h-dvh grid-cols-12">
+      <aside className="col-span-3 h-full overflow-hidden border-r border-sidebar-border">
+        <ChatsList />
+      </aside>
+      <main className="col-span-9 flex h-full min-h-0 flex-col">
+        {chatId ? (
+          <Chat key={chatId} chatId={chatId} />
+        ) : (
+          <div className="flex h-full items-center justify-center">
+            <p className="text-muted-foreground">Выберите чат слева</p>
           </div>
-        </CardHeader>
-        <CardContent className="flex flex-1 flex-col">
-          {chats.length === 0 ? (
-            <div className="flex flex-1 flex-col items-center justify-center gap-4">
-              <p className="text-muted-foreground">Пока нет ни одного чата</p>
-            </div>
-          ) : (
-            <ul className="flex flex-col gap-1">
-              {chats.map((chat) => (
-                <li
-                  key={chat.chatId}
-                  className="rounded-lg px-2.5 py-2 hover:bg-muted"
-                >
-                  {chat.title}
-                </li>
-              ))}
-            </ul>
-          )}
-        </CardContent>
-      </Card>
+        )}
+      </main>
     </div>
   )
 }
