@@ -7,7 +7,14 @@ import { Input } from "@/lib/ui/input";
 import { Label } from "@/lib/ui/label";
 
 const loginSchema = z.object({
-  apiUrl: z.string().trim().min(1, "Введите API URL").url("Введите корректный URL"),
+  apiUrl: z
+    .string()
+    .trim()
+    .min(1, "Введите API URL")
+    .regex(
+      /^https:\/\/[a-z0-9-]+\.api\.green-api\.com$/i,
+      "URL вида https://xxxx.api.green-api.com, без слэша в конце",
+    ),
   idInstance: z
     .string()
     .trim()
