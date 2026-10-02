@@ -164,7 +164,7 @@ function LoginForm() {
   return (
     <form className="flex flex-col gap-4" onSubmit={handleSubmit} noValidate>
       <div className="flex flex-col gap-2">
-        <Label htmlFor="idInstance">idInstance</Label>
+        <Label htmlFor="idInstance">Instance ID</Label>
         <Input
           id="idInstance"
           name="idInstance"
@@ -181,7 +181,7 @@ function LoginForm() {
         )}
       </div>
       <div className="flex flex-col gap-2">
-        <Label htmlFor="apiTokenInstance">apiTokenInstance</Label>
+        <Label htmlFor="apiTokenInstance">Token</Label>
         <Input
           id="apiTokenInstance"
           name="apiTokenInstance"
