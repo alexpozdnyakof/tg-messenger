@@ -1,12 +1,12 @@
-import { Redirect, Route, Switch } from 'wouter'
-import LoginPage from '@/pages/LoginPage'
-import MessagesPage from '@/pages/MessagesPage'
-import { useAuthStore } from '@/auth/authStore'
-import { useChatsStore } from '@/chats/chatsStore'
+import { Redirect, Route, Switch } from "wouter";
+import LoginPage from "@/pages/LoginPage";
+import MessagesPage from "@/pages/MessagesPage";
+import { useAuthStore } from "@/auth/authStore";
+import { useChatsStore } from "@/chats/chatsStore";
 
 function App() {
-  const credentials = useAuthStore((state) => state.credentials)
-  const chats = useChatsStore((state) => state.chats)
+  const credentials = useAuthStore((state) => state.credentials);
+  const chats = useChatsStore((state) => state.chats);
 
   return (
     <Switch>
@@ -32,7 +32,7 @@ function App() {
         }
       </Route>
     </Switch>
-  )
+  );
 }
 
-export default App
+export default App;
