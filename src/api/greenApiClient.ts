@@ -1,11 +1,3 @@
-const GREEN_API_URL = import.meta.env.VITE_GREEN_API_URL;
-
-if (!GREEN_API_URL) {
-  throw new Error(
-    "VITE_GREEN_API_URL is not set. Copy .env.example to .env and fill in your GREEN-API instance host.",
-  );
-}
-
 async function readJson<T>(response: Response): Promise<T | undefined> {
   try {
     return (await response.json()) as T;
@@ -64,6 +56,7 @@ function dedupeInFlight<T>(key: string, run: () => Promise<T>): Promise<T> {
 }
 
 export type GreenApiCredentials = {
+  apiUrl: string;
   idInstance: string;
   apiTokenInstance: string;
 };
@@ -103,8 +96,8 @@ export type GetStateInstanceResult =
 export async function getStateInstance(
   credentials: GreenApiCredentials,
 ): Promise<GetStateInstanceResult> {
-  const { idInstance, apiTokenInstance } = credentials;
-  const url = `${GREEN_API_URL}/waInstance${idInstance}/getStateInstance/${apiTokenInstance}`;
+  const { apiUrl, idInstance, apiTokenInstance } = credentials;
+  const url = `${apiUrl}/waInstance${idInstance}/getStateInstance/${apiTokenInstance}`;
 
   const response = await fetchWithRetry(url);
   if (!response) {
@@ -133,8 +126,8 @@ export async function checkAccount(
   credentials: GreenApiCredentials,
   params: CheckAccountParams,
 ): Promise<CheckAccountResult> {
-  const { idInstance, apiTokenInstance } = credentials;
-  const url = `${GREEN_API_URL}/waInstance${idInstance}/checkAccount/${apiTokenInstance}`;
+  const { apiUrl, idInstance, apiTokenInstance } = credentials;
+  const url = `${apiUrl}/waInstance${idInstance}/checkAccount/${apiTokenInstance}`;
 
   const response = await fetchWithRetry(url, {
     method: "POST",
@@ -177,8 +170,8 @@ export async function sendMessage(
   credentials: GreenApiCredentials,
   params: SendMessageParams,
 ): Promise<SendMessageResult> {
-  const { idInstance, apiTokenInstance } = credentials;
-  const url = `${GREEN_API_URL}/waInstance${idInstance}/sendMessage/${apiTokenInstance}`;
+  const { apiUrl, idInstance, apiTokenInstance } = credentials;
+  const url = `${apiUrl}/waInstance${idInstance}/sendMessage/${apiTokenInstance}`;
 
   const response = await fetchWithRetry(url, {
     method: "POST",
@@ -211,8 +204,8 @@ export function getChatHistory(
   credentials: GreenApiCredentials,
   chatId: string,
 ): Promise<GetChatHistoryResult> {
-  const { idInstance, apiTokenInstance } = credentials;
-  const url = `${GREEN_API_URL}/waInstance${idInstance}/getChatHistory/${apiTokenInstance}`;
+  const { apiUrl, idInstance, apiTokenInstance } = credentials;
+  const url = `${apiUrl}/waInstance${idInstance}/getChatHistory/${apiTokenInstance}`;
   const init: RequestInit = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -276,8 +269,8 @@ export type SetSettingsResult =
 export async function setSettings(
   credentials: GreenApiCredentials,
 ): Promise<SetSettingsResult> {
-  const { idInstance, apiTokenInstance } = credentials;
-  const url = `${GREEN_API_URL}/waInstance${idInstance}/setSettings/${apiTokenInstance}`;
+  const { apiUrl, idInstance, apiTokenInstance } = credentials;
+  const url = `${apiUrl}/waInstance${idInstance}/setSettings/${apiTokenInstance}`;
 
   const response = await fetchWithRetry(url, {
     method: "POST",
@@ -312,8 +305,8 @@ export type ReceiveNotificationResult =
 export async function receiveNotification(
   credentials: GreenApiCredentials,
 ): Promise<ReceiveNotificationResult> {
-  const { idInstance, apiTokenInstance } = credentials;
-  const url = `${GREEN_API_URL}/waInstance${idInstance}/receiveNotification/${apiTokenInstance}`;
+  const { apiUrl, idInstance, apiTokenInstance } = credentials;
+  const url = `${apiUrl}/waInstance${idInstance}/receiveNotification/${apiTokenInstance}`;
 
   const response = await fetchWithRetry(url);
   if (!response) {
@@ -378,8 +371,8 @@ export async function deleteNotification(
   credentials: GreenApiCredentials,
   receiptId: number,
 ): Promise<DeleteNotificationResult> {
-  const { idInstance, apiTokenInstance } = credentials;
-  const url = `${GREEN_API_URL}/waInstance${idInstance}/deleteNotification/${apiTokenInstance}/${receiptId}`;
+  const { apiUrl, idInstance, apiTokenInstance } = credentials;
+  const url = `${apiUrl}/waInstance${idInstance}/deleteNotification/${apiTokenInstance}/${receiptId}`;
 
   const response = await fetchWithRetry(url, { method: "DELETE" });
   if (!response) {

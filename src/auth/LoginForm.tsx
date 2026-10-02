@@ -7,6 +7,7 @@ import { Input } from "@/lib/ui/input";
 import { Label } from "@/lib/ui/label";
 
 const loginSchema = z.object({
+  apiUrl: z.string().trim().min(1, "Введите API URL").url("Введите корректный URL"),
   idInstance: z
     .string()
     .trim()
@@ -17,7 +18,7 @@ const loginSchema = z.object({
 
 type LoginField = keyof z.infer<typeof loginSchema>;
 
-type LoginForm = { idInstance: string; apiTokenInstance: string };
+type LoginForm = { apiUrl: string; idInstance: string; apiTokenInstance: string };
 type LoginFieldErrors = Partial<Record<LoginField, string>>;
 
 type LoginFormState = {
@@ -28,6 +29,7 @@ type LoginFormState = {
 };
 
 type LoginFormAction =
+  | { type: "setApiUrl"; value: string }
   | { type: "setIdInstance"; value: string }
   | { type: "setApiTokenInstance"; value: string }
   | { type: "fieldValidated"; field: LoginField; error: string | undefined }
@@ -37,7 +39,7 @@ type LoginFormAction =
   | { type: "submitSucceeded" };
 
 const initialState: LoginFormState = {
-  form: { idInstance: "", apiTokenInstance: "" },
+  form: { apiUrl: "", idInstance: "", apiTokenInstance: "" },
   fieldErrors: {},
   formError: undefined,
   status: "idle",
@@ -58,6 +60,12 @@ function loginFormReducer(
   action: LoginFormAction,
 ): LoginFormState {
   switch (action.type) {
+    case "setApiUrl":
+      return {
+        ...state,
+        form: { ...state.form, apiUrl: action.value },
+        fieldErrors: { ...state.fieldErrors, apiUrl: undefined },
+      };
     case "setIdInstance":
       return {
         ...state,
@@ -115,6 +123,7 @@ function LoginForm() {
       dispatch({
         type: "formValidated",
         errors: {
+          apiUrl: errors.apiUrl?.[0],
           idInstance: errors.idInstance?.[0],
           apiTokenInstance: errors.apiTokenInstance?.[0],
         },
@@ -163,6 +172,24 @@ function LoginForm() {
 
   return (
     <form className="flex flex-col gap-4" onSubmit={handleSubmit} noValidate>
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="apiUrl">API URL</Label>
+        <Input
+          id="apiUrl"
+          name="apiUrl"
+          autoComplete="off"
+          placeholder="https://xxxx.api.green-api.com"
+          value={form.apiUrl}
+          onChange={(event) =>
+            dispatch({ type: "setApiUrl", value: event.target.value })
+          }
+          onBlur={(event) => validateField("apiUrl", event.target.value)}
+          aria-invalid={Boolean(fieldErrors.apiUrl)}
+        />
+        {fieldErrors.apiUrl && (
+          <p className="text-sm text-destructive">{fieldErrors.apiUrl}</p>
+        )}
+      </div>
       <div className="flex flex-col gap-2">
         <Label htmlFor="idInstance">Instance ID</Label>
         <Input
